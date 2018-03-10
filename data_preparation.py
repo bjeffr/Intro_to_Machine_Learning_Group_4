@@ -4,15 +4,8 @@ import numpy as np
 #import matplotlib.pyplot as plt
 from sklearn.preprocessing import Imputer
 
-
-
 df_stock = pd.read_csv('stock_version_one.csv').set_index('TICKER')
 print(df_stock.date['MSFT'])
-
-
-
-#hallo
-print("Du habasch")
 
 #check for NA values
 print(df_stock.isnull().sum())
