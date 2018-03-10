@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bd71fb72-bba2-4e73-9ffc-c866632328e9" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Intro_to_Machine_Learning_Group_4.iml" afterPath="$PROJECT_DIR$/.idea/Intro_to_Machine_Learning_Group_4.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/data_preparation.py" afterPath="$PROJECT_DIR$/data_preparation.py" />
-    </list>
+    <list default="true" id="bd71fb72-bba2-4e73-9ffc-c866632328e9" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
