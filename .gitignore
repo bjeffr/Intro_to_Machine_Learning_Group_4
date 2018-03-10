@@ -4,3 +4,5 @@ venv/
 *.xml
 .idea/Intro_to_Machine_Learning_Group_4.iml
 .idea/misc.xml
+*.iml
+*.xml
