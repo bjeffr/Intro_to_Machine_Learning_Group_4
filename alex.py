@@ -2,6 +2,7 @@ from Intro_to_Machine_Learning_Group_4 import data_preparation_stocks as sp
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn import metrics
 plt.style.use('seaborn-whitegrid')
 plt.rcParams['font.size'] = 14
 
@@ -9,7 +10,21 @@ plt.rcParams['font.size'] = 14
 df_stock = sp.stock_formatter()
 
 #****************-------------------*********************----------------------*******************--------------------
+                     #Linear and Quadratic Discriminant Analysis
+#****************-------------------*********************----------------------*******************--------------------
 
+for permno, new_df in df_stock.groupby(level=0):
+    today = np.log(new_df['PRC'] / new_df['PRC'].shift(-1))
+    direction = np.where(today >= 0, 1, 0)
+
+    X_train = new_df[['DCLRDT', 'PAYDT', 'BIDLO', 'ASKHI', 'PRC', 'VOL', 'SHROUT', 'RETX', 'ewretd']]
+    print(X_train)
+
+
+
+
+#****************-------------------*********************----------------------*******************--------------------
+                      #k-Nearest Neighbors
 #****************-------------------*********************----------------------*******************--------------------
 
 
