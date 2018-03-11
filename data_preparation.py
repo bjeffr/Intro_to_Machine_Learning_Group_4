@@ -18,6 +18,8 @@ df_ratio = pd.read_csv('ratio_version_one.csv', index_col=[0,1])
 #                       reformatting the dataframe
 #****************---------------***************-----------------*************-----------------
 
+
+
 #fill all NaN values in the date columns with 0
 df_stock['DCLRDT'] = df_stock['DCLRDT'].fillna(0)
 df_stock['PAYDT'] = df_stock['PAYDT'].fillna(0)
@@ -47,12 +49,25 @@ df_stock['DIVAMT'] = df_stock['DIVAMT'].bfill()
 # Drop a column if too many NaN or just considered unimportant
 df_stock = df_stock.drop('HSICMG', axis=1) #has only values for JPM, NKE and CSCO makes no sense to include
 df_stock = df_stock.drop('SPREAD', axis=1)
-print(df_stock.isnull().sum())
+# print(df_stock.isnull().sum())
 # print(df_ratio.isnull().sum())
 # print(df_stock)
 
+#delete all rows that contain more than the specified number of NaN values, please only use this as the last step and
+#check the variable row_counter to see how many rows have been deleted
 
-print(df_stock.head())
+thresh = 3
+row_counter = 0
+for row in df_stock.iterrows():
+    if row[1].isnull().sum()>thresh:
+        df_stock.drop(df_stock.index[int(row[0])], inplace=True)
+        row_counter += 1
+print(row_counter)
+
+
+
+
+        # print(df_stock.head())
 
 # Impute missing values
 # The imputation strategy.
