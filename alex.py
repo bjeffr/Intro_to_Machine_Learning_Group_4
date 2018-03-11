@@ -1,6 +1,36 @@
 from Intro_to_Machine_Learning_Group_4 import data_preparation_stocks as sp
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+plt.style.use('seaborn-whitegrid')
+plt.rcParams['font.size'] = 14
 
-sp.stock_formatter()
+
+df_stock = sp.stock_formatter()
+
+#****************-------------------*********************----------------------*******************--------------------
+
+#****************-------------------*********************----------------------*******************--------------------
+
+
+df_stock = df_stock.set_index(['PERMNO', 'date'])
+
+for permno, new_df in df_stock.groupby(level=0):
+
+    today = np.log(new_df['PRC']/new_df['PRC'].shift(-1))
+    # print(new_df.head())
+    direction = np.where(today >= 0, 1, 0)
+
+    direction = pd.DataFrame(direction, index=today.index)
+    new_df['direction'] = direction.values
+    print(new_df.loc[[(permno)]])
+    break
+
+
+
+
+
+
 
 
 # Impute missing values

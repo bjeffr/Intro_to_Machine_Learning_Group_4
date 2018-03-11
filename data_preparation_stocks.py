@@ -12,7 +12,6 @@ def stock_formatter():
     #                       reformatting the dataframe stock
     #****************---------------***************-----------------*************-----------------
 
-    print("hello")
 
     #fill all NaN values in the date columns with 0
     df_stock['DCLRDT'] = df_stock['DCLRDT'].fillna(0)
@@ -59,7 +58,7 @@ def stock_formatter():
         if row[1].isnull().sum()>thresh:
             df_stock.drop(df_stock.index[int(row[0])], inplace=True)
             row_counter += 1
-    print(row_counter)
-
+    # print(row_counter)
+    return df_stock
 
     # ****************---------------***************-----------------*************-----------------
