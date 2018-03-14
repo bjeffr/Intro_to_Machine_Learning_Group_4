@@ -4,7 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeClassifier, export_graphviz
+import graphviz
 from sklearn import metrics
 
 
@@ -46,7 +47,7 @@ tree = DecisionTreeClassifier(max_depth=4)
 tree.fit(X_train, y_train)
 
 #print peformance metrics
-print('True proportions of sales >= 4k: ', y.sum() / y.shape[0])
+print('True proportions of movement >= 4k: ', y.sum() / y.shape[0])
 print('Train score: ', tree.score(X_train, y_train))
 print('Test score: ', tree.score(X_test, y_test))
 print(37*'-')
@@ -56,11 +57,19 @@ y_pred = tree.predict(X_test)
 # print('Confusion matrix: \n', metrics.confusion_matrix(y_test, y_pred))
 
 # nice confusion matrix as pandas df
-confm = pd.DataFrame({'Predicted sales >=4k': y_pred, 'True sales >=4k': y_test})
+confm = pd.DataFrame({'Predicted movement >=4k': y_pred, 'True movement >=4k': y_test})
 confm.replace(to_replace={0:'No', 1:'Yes'}, inplace=True)
-print(confm.groupby(['True sales >=4k', 'Predicted sales >=4k']).size().unstack('Predicted sales >=4k'))
+print(confm.groupby(['True movement >=4k', 'Predicted movement >=4k']).size().unstack('Predicted movement >=4k'))
 
+#graphviw draw decition tree
 
+dot_data = export_graphviz(tree, filled=True, rounded=True,\
+           class_names=['Down', 'Up'], feature_names=df_stock[cols].columns.values,
+            out_file='tree.dot')
+
+graph = graphviz.Source(dot_data)
+graph
+dot -Tpng dree.dot -o tree.png
 
 
 #****************-------------------*********************----------------------*******************--------------------

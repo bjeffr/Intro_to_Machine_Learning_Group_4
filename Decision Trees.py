@@ -48,7 +48,7 @@ tree = DecisionTreeClassifier(max_depth=4)
 tree.fit(X_train, y_train)
 
 #print peformance metrics
-print('True proportions of sales >= 4k: ', y.sum() / y.shape[0])
+print('True proportions of movement >= 4k: ', y.sum() / y.shape[0])
 print('Train score: ', tree.score(X_train, y_train))
 print('Test score: ', tree.score(X_test, y_test))
 print(37*'-')
