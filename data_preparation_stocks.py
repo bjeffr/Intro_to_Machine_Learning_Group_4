@@ -1,17 +1,18 @@
 import pandas as pd
+
+
 def stock_formatter():
-    #Organize the df structure with multi indexies, whereas 'PERMNO' is the first indes and 'date' the second
+    # Organize the df structure with multi indexies, whereas 'PERMNO' is the first index and 'date' the second
     df_stock = pd.read_csv('stock_version_one.csv')
 
-    #example to Print all Stock data from Microsoft, indexing is a bit special in panda...here the example to print
-    #out all the stock data for MSFT and the second one single dates for MSFT and KO.
+    # example to Print all Stock data from Microsoft, indexing is a bit special in panda...here the example to print
+    # out all the stock data for MSFT and the second one single dates for MSFT and KO.
     # print(df_stock.loc[10107])  #all microsoft Stock data
     # print(df_stock.loc[[(10107,'31/01/2006') ,(11308, '31/01/2006')]]) #prints specific PERMNO&date
 
-    #****************---------------***************-----------------*************-----------------
+    # ****************---------------***************-----------------*************-----------------
     #                       reformatting the dataframe stock
-    #****************---------------***************-----------------*************-----------------
-
+    # ****************---------------***************-----------------*************-----------------
 
     # fill all NaN values in the date columns with 0
     df_stock['DCLRDT'] = df_stock['DCLRDT'].fillna(0)
@@ -19,25 +20,23 @@ def stock_formatter():
     df_stock['FACPR'] = df_stock['FACPR'].fillna(0)
     df_stock['FACSHR'] = df_stock['FACSHR'].fillna(0)
     # next step is to fill the existing values in the date columns with a 1, therefore making it a binary variable
-    # the dates are mostly somewhere in the middle of the month and because we utilize monthly data we just indicate if for
-    # example a dividend was payed in that month
+    # the dates are mostly somewhere in the middle of the month and because we utilize monthly data we just
+    # indicate if for example a dividend was payed in that month
     for i, row in df_stock.iterrows():
-        if row['PAYDT']!= 0:
+        if row['PAYDT'] != 0:
             df_stock.set_value(i, 'PAYDT', 1)
-        if row['DCLRDT']!= 0:
+        if row['DCLRDT'] != 0:
             df_stock.set_value(i, 'DCLRDT', 1)
 
-
-
-    #forwardfill for DIVAMT because $-Value per share of distribution has not only a monthly impact but is rather a constant
-    #indicator, and at the end bfill the first row that was still empty
+    # forwardfill for DIVAMT because $-Value per share of distribution has not only a monthly impact but is
+    # rather a constant indicator, and at the end bfill the first row that was still empty
     df_stock['DIVAMT'] = df_stock['DIVAMT'].ffill()
     df_stock['DIVAMT'] = df_stock['DIVAMT'].bfill()
 
     # Drop a column if too many NaN or just considered unimportant
-    df_stock = df_stock.drop('HSICMG', axis=1) #has only values for JPM, NKE and CSCO makes no sense to include
+    df_stock = df_stock.drop('HSICMG', axis=1)  # has only values for JPM, NKE and CSCO makes no sense to include
     df_stock = df_stock.drop('SPREAD', axis=1)
-    df_stock = df_stock.drop('TICKER', axis=1) #drop the Tickers and created a dictionary with the PERMNO codes
+    df_stock = df_stock.drop('TICKER', axis=1)  # drop the Tickers and created a dictionary with the PERMNO codes
     stock_dict = {10107:'Microsoft Corporation', 11308:'The Coca-Cola Co', 11850:'Exxon Mobil Corporation', \
                   12060:'General Electric Company', 12490:'IBM Common Stock', 14541:'Chevron Corporation', \
                   14593:'Apple Inc.', 17830:'United Technologies Corporation', 18163:'Procter & Gamble Co', \
@@ -49,8 +48,8 @@ def stock_formatter():
                   86868:'Goldman Sachs Group Inc', 92611:'Visa Inc', 92655:'Unitedhealth Group Inc'}
     # print(df_stock.isnull().sum())
 
-    #delete all rows that contain more than the specified number of NaN values, please only use this as the last step and
-    #check the variable row_counter to see how many rows have been deleted
+    # delete all rows that contain more than the specified number of NaN values,
+    # please only use this as the last step and check the variable row_counter to see how many rows have been deleted
 
     thresh = 3
     row_counter = 0
@@ -60,5 +59,3 @@ def stock_formatter():
             row_counter += 1
     # print(row_counter)
     return df_stock
-
-    # ****************---------------***************-----------------*************-----------------
