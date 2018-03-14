@@ -72,14 +72,17 @@ def stock_formatter():
 
     # delete all rows that contain more than the specified number of NaN values,
     # please only use this as the last step and check the variable row_counter to see how many rows have been deleted
-
     thresh = 3
     row_counter = 0
     for row in df_stock.iterrows():
         if row[1].isnull().sum()>thresh:
             df_stock.drop(df_stock.index[int(row[0])], inplace=True)
             row_counter += 1
+<<<<<<< HEAD
     # print(row_counter)
     return df_stock
 
 stock_formatter()
+=======
+
+>>>>>>> 4820dd62c6dfd3d23a9921fdc5cccca5adcc3fd9
