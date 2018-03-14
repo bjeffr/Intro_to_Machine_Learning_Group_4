@@ -2,9 +2,10 @@ import pandas as pd
 
 
 def stock_formatter():
-    # Organize the df structure with multi indexies, whereas 'PERMNO' is the first index and 'date' the second
+    # Load the csv file for the stocks data and store it as a dataframe
     df_stock = pd.read_csv('stock_version_one.csv')
 
+    # For use with multi index:
     # example to Print all Stock data from Microsoft, indexing is a bit special in panda...here the example to print
     # out all the stock data for MSFT and the second one single dates for MSFT and KO.
     # print(df_stock.loc[10107])  #all microsoft Stock data
@@ -37,15 +38,36 @@ def stock_formatter():
     df_stock = df_stock.drop('HSICMG', axis=1)  # has only values for JPM, NKE and CSCO makes no sense to include
     df_stock = df_stock.drop('SPREAD', axis=1)
     df_stock = df_stock.drop('TICKER', axis=1)  # drop the Tickers and created a dictionary with the PERMNO codes
-    stock_dict = {10107:'Microsoft Corporation', 11308:'The Coca-Cola Co', 11850:'Exxon Mobil Corporation', \
-                  12060:'General Electric Company', 12490:'IBM Common Stock', 14541:'Chevron Corporation', \
-                  14593:'Apple Inc.', 17830:'United Technologies Corporation', 18163:'Procter & Gamble Co', \
-                  18542:'Caterpillar Inc.', 19561:'Boeing Co', 20626:'DOW Chemical Co', 21936:'Pfizer Inc.', \
-                  22111:'Johnson & Johnson', 22592:'3M Co', 22752:'Merck & Co., Inc.', 26403: 'Disney Walt Co',\
-                  43449:'MC Donalds Corp', 47896:'JPMorgan Chase & Co', 55976:'Wal Mart Stores Inc', 57665:'Nike',\
-                  59176:'American Express Co', 59328:'Intel Corp', 59459:'Travelers Companies Inc', 65875:\
-                  'Verizon Communications Inc', 66181:'Home Depot Inc', 76076:'Cisco Systems Inc',\
-                  86868:'Goldman Sachs Group Inc', 92611:'Visa Inc', 92655:'Unitedhealth Group Inc'}
+    stock_dict = {10107: 'Microsoft Corporation',
+                  11308: 'The Coca-Cola Co',
+                  11850: 'Exxon Mobil Corporation',
+                  12060: 'General Electric Company',
+                  12490: 'IBM Common Stock',
+                  14541: 'Chevron Corporation',
+                  14593: 'Apple Inc.',
+                  17830: 'United Technologies Corporation',
+                  18163: 'Procter & Gamble Co',
+                  18542: 'Caterpillar Inc.',
+                  19561: 'Boeing Co',
+                  20626: 'DOW Chemical Co',
+                  21936: 'Pfizer Inc.',
+                  22111: 'Johnson & Johnson',
+                  22592: '3M Co',
+                  22752: 'Merck & Co., Inc.',
+                  26403: 'Disney Walt Co',
+                  43449: 'MC Donalds Corp',
+                  47896: 'JPMorgan Chase & Co',
+                  55976: 'Wal Mart Stores Inc',
+                  57665: 'Nike',
+                  59176: 'American Express Co',
+                  59328: 'Intel Corp',
+                  59459: 'Travelers Companies Inc',
+                  65875: 'Verizon Communications Inc',
+                  66181: 'Home Depot Inc',
+                  76076: 'Cisco Systems Inc',
+                  86868: 'Goldman Sachs Group Inc',
+                  92611: 'Visa Inc',
+                  92655: 'UnitedHealth Group Inc'}
     # print(df_stock.isnull().sum())
 
     # delete all rows that contain more than the specified number of NaN values,
@@ -59,3 +81,5 @@ def stock_formatter():
             row_counter += 1
     # print(row_counter)
     return df_stock
+
+stock_formatter()
