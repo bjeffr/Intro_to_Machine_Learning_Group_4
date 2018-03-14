@@ -85,4 +85,14 @@ def stock_formatter():
 stock_formatter()
 =======
 
+    stock_col = ['SICCD', 'DIVAMT', 'BIDLO', 'ASKHI', 'PRC', 'VOL', 'SHROUT', 'ewretd']
+    cols = df_stock.columns.tolist()
+    cols = cols[:3] + cols[5:-2] + cols[-1:] + cols[4:5] #+ cols[-2:-1]
+
+    # CAREFUL PERMNO CODE DELETED FOR TESTING REASONS!!!!!!!!!!!!!!!
+
+    df_stock = df_stock[cols[2:]]
+
+
+    return df_stock
 >>>>>>> 4820dd62c6dfd3d23a9921fdc5cccca5adcc3fd9
