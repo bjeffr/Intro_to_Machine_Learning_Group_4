@@ -32,6 +32,7 @@ y = direction
 X_train, X_test, y_train, y_test = train_test_split(df_stock[cols], y, test_size=0.3, random_state=0, stratify=y)
 # print(X_train.head())
 stdsc = StandardScaler()
+
 X_train_std = stdsc.fit_transform(X_train[cols_scl])
 # fit & transform
 X_test_std = stdsc.transform(X_train[cols_scl]) #only transform
@@ -69,7 +70,6 @@ dot_data = export_graphviz(tree, filled=True, rounded=True,\
 
 graph = graphviz.Source(dot_data)
 graph
-dot -Tpng dree.dot -o tree.png
 
 
 #****************-------------------*********************----------------------*******************--------------------
