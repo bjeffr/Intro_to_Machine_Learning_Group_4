@@ -87,23 +87,14 @@ def stock_formatter():
             df_stock.drop(df_stock.index[int(row[0])], inplace=True)
             row_counter += 1
     # print(row_counter)
-
+    # delete rows with 'tresh' NaN's
     df_stock = ra.delete_rows_by_threshold(df_stock, 3)
 
-    # print(df_stock.head())
-
+    df_stock['PERMNO'] = df_stock['PERMNO'].astype(str)
+    print(df_stock.columns)
     df_stock = df_stock.drop('date', axis=1)
+    df_stock = pd.get_dummies(df_stock)
 
-    le = pp.LabelEncoder()
-    data_le = le.fit_transform(df_stock['PERMNO'])
-
-    le.inverse_transform(data_le)
-
-    df_stock['PERMNO'] = data_le
-    ohe = pp.OneHotEncoder(sparse=True)
-    ohe.fit_transform(data_le)
-
-    print(pd.DataFrame(ohe.fit_transform(data_le).toarray()))
     print(df_stock.head())
 
     return df_stock
