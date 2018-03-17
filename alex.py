@@ -13,7 +13,7 @@ plt.style.use('seaborn-whitegrid')
 plt.rcParams['font.size'] = 14
 
 df = clean_data()
-df = df.drop(columns='public_date')
+df = df.drop(columns='Date')
 
 # create the response vector (up or down movement)
 today = np.log(df['PRC'] / df['PRC'].shift(-1))
@@ -28,8 +28,8 @@ df['delta'] = df['delta'].fillna(0)
 
 # distignuish between columns that have to be scaled and the dummy columns
 cols = df.columns.values
-cols_scl = cols[:37]
-cols_dummy = cols[37:]
+cols_scl = cols[:36]
+cols_dummy = cols[36:]
 
 
 #****************-------------------*********************----------------------*******************--------------------
