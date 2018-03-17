@@ -13,14 +13,14 @@ plt.style.use('seaborn-whitegrid')
 plt.rcParams['font.size'] = 14
 
 
-df_stock = sp.stock_formatter()
-cols = df_stock.columns.values
+df =
+cols = df.columns.values
 cols_scl = cols[2:-1]
 cols_dummy = cols[-1:]
-# print(df_stock[cols_scl].head())
-today = np.log(df_stock['PRC'] / df_stock['PRC'].shift(-1))
+# print(df[cols_scl].head())
+today = np.log(df['PRC'] / df['PRC'].shift(-1))
 direction = np.where(today >= 0, 1, 0)
-# print(df_stock.head())
+# print(df.head())
 
 #****************-------------------*********************----------------------*******************--------------------
                      #Feature Engineering, Scaling, and Cross Validation
@@ -29,7 +29,7 @@ direction = np.where(today >= 0, 1, 0)
 #assign response vector
 y = direction
 
-X_train, X_test, y_train, y_test = train_test_split(df_stock[cols], y, test_size=0.3, random_state=0, stratify=y)
+X_train, X_test, y_train, y_test = train_test_split(df[cols], y, test_size=0.3, random_state=0, stratify=y)
 # print(X_train.head())
 stdsc = StandardScaler()
 
@@ -65,7 +65,7 @@ print(confm.groupby(['True movement >=4k', 'Predicted movement >=4k']).size().un
 #graphviw draw decition tree
 
 dot_data = export_graphviz(tree, filled=True, rounded=True,\
-           class_names=['Down', 'Up'], feature_names=df_stock[cols].columns.values,
+           class_names=['Down', 'Up'], feature_names=df[cols].columns.values,
             out_file='tree.dot')
 
 graph = graphviz.Source(dot_data)

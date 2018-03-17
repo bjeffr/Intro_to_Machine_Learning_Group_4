@@ -133,8 +133,3 @@ def ratio_formatter():
     df = delete_rows_by_threshold(df, 4)
 
     return df
-
-df = ratio_formatter()
-
-print(df.isnull().sum())
-# print(df.columns[:50], df.columns[49:])

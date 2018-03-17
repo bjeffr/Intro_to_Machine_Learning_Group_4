@@ -11,15 +11,15 @@ from sklearn import metrics
 plt.style.use('seaborn-whitegrid')
 plt.rcParams['font.size'] = 14
 
-df_stock = sp.stock_formatter()
+df =
 
 #distignuish between columns that have to be scaled and the dummy columns
-cols = df_stock.columns.values
+cols = df.columns.values
 cols_scl = cols[2:-1]
 cols_dummy = cols[-1:]
 
 # create the response vector (up or down movement)
-today = np.log(df_stock['PRC'] / df_stock['PRC'].shift(-1))
+today = np.log(df['PRC'] / df['PRC'].shift(-1))
 direction = np.where(today >= 0, 1, 0)
 
 
@@ -30,7 +30,7 @@ direction = np.where(today >= 0, 1, 0)
 #assign response vector
 y = direction
 
-X_train, X_test, y_train, y_test = train_test_split(df_stock[cols], y, test_size=0.3, random_state=0, stratify=y)
+X_train, X_test, y_train, y_test = train_test_split(df[cols], y, test_size=0.3, random_state=0, stratify=y)
 # print(X_train.head())
 stdsc = StandardScaler()
 X_train_std = stdsc.fit_transform(X_train[cols_scl])
