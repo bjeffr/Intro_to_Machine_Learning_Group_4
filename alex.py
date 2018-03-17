@@ -79,11 +79,6 @@ dot_data = export_graphviz(tree, filled=True, rounded=True,\
             out_file='tree.dot')
 
 graph = graphviz.Source(dot_data)
-graph
-
-
-
-
 
 # dot -Tpng tree.dot
 # dot tree.dot -Tpng -o image.png
@@ -94,27 +89,44 @@ graph
 
 # define the hyperparameter values to be tested
 
-maxDepth = np.array([1,4,5,6,9])
-minSamplesNode = np.array([2,5,10,20])
-minSamplesLeaf = np.array([2,5,10,20])
+# maxDepth = np.array([1,4,5,6,9])
+# minSamplesNode = np.array([2,5,10,20])
+# minSamplesLeaf = np.array([2,5,10,20])
+#
+# kFold = StratifiedKFold(n_splits=10, random_state=10)
+#
+# param_grid = {'criterion': ['gini', 'entropy'],
+#               'max_depth': maxDepth,
+#               'min_samples_split': minSamplesNode,
+#               'min_samples_leaf': minSamplesLeaf}
+#
+#
+#
+# gs = GridSearchCV(estimator=DecisionTreeClassifier(random_state=0),
+#                   param_grid=param_grid,
+#                   scoring='accuracy',
+#                   cv=kFold, n_jobs=-1)
+# gs = gs.fit(X_train, y_train)
+#
+# print(gs.best_score_)
+# print(gs.best_params_)
+# clf = gs.best_estimator_
+# clf.fit(X_train, y_train)
 
-kFold = StratifiedKFold(n_splits=10, random_state=10)
+#****************-------------------*********************----------------------*******************--------------------
+                      #Support Vector Machines
+#****************-------------------*********************----------------------*******************--------------------
 
-param_grid = {'criterion': ['gini', 'entropy'],
-              'max_depth': maxDepth,
-              'min_samples_split': minSamplesNode,
-              'min_samples_leaf': minSamplesLeaf}
+from sklearn.svm import SVC
 
+# create object
 
+svm_linear = SVC(kernel='linear', C=1.0)
 
-gs = GridSearchCV(estimator=DecisionTreeClassifier(random_state=0),
-                  param_grid=param_grid,
-                  scoring='accuracy',
-                  cv=kFold, n_jobs=-1)
-gs = gs.fit(X_train, y_train)
+# Fit linear SVM to standardized training set
+svm_linear.fit(X_train, y_train)
 
-print(gs.best_score_)
-print(gs.best_params_)
+print("Observed probability of Up: ")
 
 
 
@@ -147,6 +159,9 @@ print(gs.best_params_)
 #     new_df['direction'] = direction.values
 #     #print(new_df.loc[[(permno)]])
 #     break
+
+
+
 
 
 
