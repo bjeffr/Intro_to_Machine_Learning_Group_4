@@ -13,6 +13,7 @@ def ratio_formatter():
     # Load the csv file for the ratios data and store it as a dataframe
     df_ratio = pd.read_csv('ratio_version_one.csv')
 
+
     # ****************---------------***************-----------------*************-----------------
     #                       reformatting the dataframe stock
     # ****************---------------***************-----------------*************-----------------
@@ -29,7 +30,30 @@ def ratio_formatter():
     # roe is missing for 3 quarters, upon inspection a backwards fill should be adequate
     df_ratio['roe'] = df_ratio['roe'].bfill()
 
-    print(df_ratio.isnull().sum())
+    # capital ratio is still missing for the first few entries of MSF, next entries are 0 so just bfill
+    df_ratio['capital_ratio'] = df_ratio['capital_ratio'].bfill()
+
+    # All Nan of cash_debt are in Goldman Sachs, fill with median (is very near of the value prior to the Nan's
+    # and fits into the pattern
+    df_ratio['cash_debt'].fillna((df_ratio['capital_ratio'].mean()), inplace=True)
+
+    # lt_ppent no data for Travelers companies found on wharton.
+    # only source found on https://www.marketwatch.com/investing/stock/trv/profile but no time series
+    # therefore just fill 0 so our algorithm won't be too strongly influenced
+    df_ratio['lt_ppent'].fillna(0, inplace=True)
+
+    # dltt_be bfill, fits into pattern very nicely
+    df_ratio['dltt_be'] = df_ratio['dltt_be'].bfill()
+
+    # deleting outlier
+    for i , n in df_ratio['inv_turn'].iteritems():
+        if n > 1000:
+            df_ratio.set_value(i, 'inv_turn', 0)
+
+    print(df_ratio.set_index('permno'))
+
+
+    # print(df_ratio.isnull().sum())
     return df_ratio
 
 
