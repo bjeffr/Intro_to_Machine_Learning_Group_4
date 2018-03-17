@@ -2,12 +2,9 @@ from Intro_to_Machine_Learning_Group_4.data_preparation_ratios import ratio_form
 from Intro_to_Machine_Learning_Group_4.data_preparation_stocks import stock_formatter
 import pandas as pd
 
-)
-df_ratio = pd.read_csv('ratio_version_one.csv')
-count = 0
-for i, n in df_stock['date'].iteritems():
-    print(i, n)
-print(df_ratio[1])
+
+df_ratio = pd.read_csv('df.csv')
+
 
 # print(df_stock['date'])
 # print(df_ratio['public_date'])
