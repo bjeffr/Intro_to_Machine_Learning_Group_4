@@ -1,18 +1,17 @@
 import pandas as pd
 
 
-def delete_rows_by_threshold(df, thresh):
+def delete_rows_by_threshold(data_frame, threshold):
     faulty_rows = []
-    for row in df.iterrows():
-        if row[1].isnull().sum() >= thresh:
-            faulty_rows.append(df.index[int(row[0])])
-    return df.drop(faulty_rows)
+    for row in data_frame.iterrows():
+        if row[1].isnull().sum() >= threshold:
+            faulty_rows.append(data_frame.index[int(row[0])])
+    return data_frame.drop(faulty_rows)
 
 
-def ratio_formatter():
+def clean_data():
     # load the csv file for the ratios data and store it as a dataframe
     df = pd.read_csv('df.csv', delimiter=';')
-    print(df.shape)
 
     # ****************---------------***************-----------------*************-----------------
     #                       reformatting the dataframe ratios
@@ -136,13 +135,10 @@ def ratio_formatter():
     df['permno'] = p
 
     # there are a few rows with lots of values missing, so we delete all rows more than 5 values missing
-    print(df.shape)
     df = delete_rows_by_threshold(df, 6)
-    print(df.shape)
 
     return df
 
-df = ratio_formatter()
+d1 = clean_data()
 
-print(df.isnull().sum())
-# print(df.columns[:50], df.columns[49:])
+print(d1.isnull().sum())
