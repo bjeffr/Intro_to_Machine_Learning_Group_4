@@ -78,7 +78,7 @@ def stock_formatter():
     cols = df_stock.columns.tolist()
     cols = cols[:3] + cols[5:-2] + cols[-1:] + cols[4:5]  # + cols[-2:-1]
 
-    # CAREFUL PERMNO CODE DELETED FOR TESTING REASONS!!!!!!!!!!!!!!!
+    # CAREFUL PERMNO CODE DELETED FOR TESTING REASONS!!!!!!!!!!!!!!
 
     df_stock = df_stock[cols[2:]]
 
