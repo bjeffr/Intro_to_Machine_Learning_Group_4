@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn import preprocessing as pp
 from Intro_to_Machine_Learning_Group_4 import data_preparation_ratios as ra
 
 
@@ -34,6 +35,13 @@ def stock_formatter():
     # rather a constant indicator, and at the end bfill the first row that was still empty
     df_stock['DIVAMT'] = df_stock['DIVAMT'].ffill()
     df_stock['DIVAMT'] = df_stock['DIVAMT'].bfill()
+
+    # One datapoint was type string, short fix:
+    s = df_stock['RETX']
+    s = pd.to_numeric(s, errors='coerce')
+    df_stock['RETX'] = s
+    df_stock['RETX'] = df_stock['RETX'].bfill()
+
 
     # Drop a column if too many NaN or just considered unimportant
     df_stock = df_stock.drop('HSICMG', axis=1)  # has only values for JPM, NKE and CSCO makes no sense to include
@@ -72,14 +80,44 @@ def stock_formatter():
 
     # delete all rows that contain more than the specified number of NaN values,
     # please only use this as the last step and check the variable row_counter to see how many rows have been deleted
+    thresh = 3
+    row_counter = 0
+    for row in df_stock.iterrows():
+        if row[1].isnull().sum()>thresh:
+            df_stock.drop(df_stock.index[int(row[0])], inplace=True)
+            row_counter += 1
+    # print(row_counter)
+
+    stock_col = ['PERMNO', 'SICCD', 'DIVAMT', 'BIDLO', 'ASKHI', 'PRC', 'VOL', 'SHROUT', 'ewretd']
     df_stock = ra.delete_rows_by_threshold(df_stock, 3)
 
     stock_col = ['SICCD', 'DIVAMT', 'BIDLO', 'ASKHI', 'PRC', 'VOL', 'SHROUT', 'ewretd']
     cols = df_stock.columns.tolist()
     cols = cols[:3] + cols[5:-2] + cols[-1:] + cols[4:5]  # + cols[-2:-1]
 
+<<<<<<< HEAD
     # CAREFUL PERMNO CODE DELETED FOR TESTING REASONS!!!!!!!!!!!!!!
+=======
 
-    df_stock = df_stock[cols[2:]]
+
+    # print(df_stock.head())
+
+    # CAREFUL PERMNO CODE DELETED FOR TESTING REASONS!!!!!!!!!!!!!!!
+>>>>>>> 7b8bc8b9d1f8355f528bc89391c818b5c7ddaf2a
+
+    df_stock = df_stock.drop('date', axis=1)
+
+
+    le = pp.LabelEncoder()
+    data_le = le.fit_transform(df_stock['PERMNO'])
+
+    le.inverse_transform(data_le)
+
+    df_stock['PERMNO'] = data_le
+    ohe = pp.OneHotEncoder(sparse=True)
+    ohe.fit_transform(data_le)
+
+    print(pd.DataFrame(ohe.fit_transform(data_le).toarray()))
+    print(df_stock.head())
 
     return df_stock
