@@ -91,10 +91,6 @@ def stock_formatter():
     stock_col = ['PERMNO', 'SICCD', 'DIVAMT', 'BIDLO', 'ASKHI', 'PRC', 'VOL', 'SHROUT', 'ewretd']
     df_stock = ra.delete_rows_by_threshold(df_stock, 3)
 
-    stock_col = ['SICCD', 'DIVAMT', 'BIDLO', 'ASKHI', 'PRC', 'VOL', 'SHROUT', 'ewretd']
-    cols = df_stock.columns.tolist()
-    cols = cols[:3] + cols[5:-2] + cols[-1:] + cols[4:5]  # + cols[-2:-1]
-
 
 
     # print(df_stock.head())
