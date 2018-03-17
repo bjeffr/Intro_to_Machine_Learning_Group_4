@@ -1,4 +1,4 @@
-from Intro_to_Machine_Learning_Group_4 import data_preparation_stocks as sp
+from Intro_to_Machine_Learning_Group_4.data_preparation import ratio_formatter
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,7 +13,7 @@ plt.style.use('seaborn-whitegrid')
 plt.rcParams['font.size'] = 14
 
 
-df =
+df = ratio_formatter()
 cols = df.columns.values
 cols_scl = cols[2:-1]
 cols_dummy = cols[-1:]
