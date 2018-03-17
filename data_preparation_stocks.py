@@ -1,5 +1,5 @@
 import pandas as pd
-
+from sklearn import preprocessing as pp
 
 def stock_formatter():
     # Load the csv file for the stocks data and store it as a dataframe
@@ -33,6 +33,13 @@ def stock_formatter():
     # rather a constant indicator, and at the end bfill the first row that was still empty
     df_stock['DIVAMT'] = df_stock['DIVAMT'].ffill()
     df_stock['DIVAMT'] = df_stock['DIVAMT'].bfill()
+
+    # One datapoint was type string, short fix:
+    s = df_stock['RETX']
+    s = pd.to_numeric(s, errors='coerce')
+    df_stock['RETX'] = s
+    df_stock['RETX'] = df_stock['RETX'].bfill()
+
 
     # Drop a column if too many NaN or just considered unimportant
     df_stock = df_stock.drop('HSICMG', axis=1)  # has only values for JPM, NKE and CSCO makes no sense to include
@@ -80,14 +87,30 @@ def stock_formatter():
             row_counter += 1
     # print(row_counter)
 
-
-    stock_col = ['SICCD', 'DIVAMT', 'BIDLO', 'ASKHI', 'PRC', 'VOL', 'SHROUT', 'ewretd']
+    stock_col = ['PERMNO', 'SICCD', 'DIVAMT', 'BIDLO', 'ASKHI', 'PRC', 'VOL', 'SHROUT', 'ewretd']
     cols = df_stock.columns.tolist()
     cols = cols[:3] + cols[5:-2] + cols[-1:] + cols[4:5] #+ cols[-2:-1]
 
+
+
+    # print(df_stock.head())
+
     # CAREFUL PERMNO CODE DELETED FOR TESTING REASONS!!!!!!!!!!!!!!!
 
-    df_stock = df_stock[cols[2:]]
+    df_stock = df_stock.drop('date', axis=1)
+
+
+    le = pp.LabelEncoder()
+    data_le = le.fit_transform(df_stock['PERMNO'])
+
+    le.inverse_transform(data_le)
+
+    df_stock['PERMNO'] = data_le
+    ohe = pp.OneHotEncoder(sparse=True)
+    ohe.fit_transform(data_le)
+
+    print(pd.DataFrame(ohe.fit_transform(data_le).toarray()))
+    print(df_stock.head())
 
 
     return df_stock
