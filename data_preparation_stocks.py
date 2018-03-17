@@ -1,5 +1,7 @@
 import pandas as pd
 from sklearn import preprocessing as pp
+from Intro_to_Machine_Learning_Group_4 import data_preparation_ratios as ra
+
 
 def stock_formatter():
     # Load the csv file for the stocks data and store it as a dataframe
@@ -75,7 +77,6 @@ def stock_formatter():
                   86868: 'Goldman Sachs Group Inc',
                   92611: 'Visa Inc',
                   92655: 'UnitedHealth Group Inc'}
-    # print(df_stock.isnull().sum())
 
     # delete all rows that contain more than the specified number of NaN values,
     # please only use this as the last step and check the variable row_counter to see how many rows have been deleted
@@ -88,8 +89,11 @@ def stock_formatter():
     # print(row_counter)
 
     stock_col = ['PERMNO', 'SICCD', 'DIVAMT', 'BIDLO', 'ASKHI', 'PRC', 'VOL', 'SHROUT', 'ewretd']
+    df_stock = ra.delete_rows_by_threshold(df_stock, 3)
+
+    stock_col = ['SICCD', 'DIVAMT', 'BIDLO', 'ASKHI', 'PRC', 'VOL', 'SHROUT', 'ewretd']
     cols = df_stock.columns.tolist()
-    cols = cols[:3] + cols[5:-2] + cols[-1:] + cols[4:5] #+ cols[-2:-1]
+    cols = cols[:3] + cols[5:-2] + cols[-1:] + cols[4:5]  # + cols[-2:-1]
 
 
 
@@ -111,6 +115,5 @@ def stock_formatter():
 
     print(pd.DataFrame(ohe.fit_transform(data_le).toarray()))
     print(df_stock.head())
-
 
     return df_stock
