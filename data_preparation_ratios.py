@@ -50,7 +50,6 @@ def ratio_formatter():
         if n > 1000:
             df_ratio.set_value(i, 'inv_turn', 0)
 
-    print(df_ratio.set_index('permno'))
 
 
     # print(df_ratio.isnull().sum())
