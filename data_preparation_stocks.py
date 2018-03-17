@@ -80,21 +80,11 @@ def stock_formatter():
 
     # delete all rows that contain more than the specified number of NaN values,
     # please only use this as the last step and check the variable row_counter to see how many rows have been deleted
-    thresh = 3
-    row_counter = 0
-    for row in df_stock.iterrows():
-        if row[1].isnull().sum()>thresh:
-            df_stock.drop(df_stock.index[int(row[0])], inplace=True)
-            row_counter += 1
-    # print(row_counter)
     # delete rows with 'tresh' NaN's
     df_stock = ra.delete_rows_by_threshold(df_stock, 3)
 
     df_stock['PERMNO'] = df_stock['PERMNO'].astype(str)
-    print(df_stock.columns)
     df_stock = df_stock.drop('date', axis=1)
     df_stock = pd.get_dummies(df_stock)
-
-    print(df_stock.head())
 
     return df_stock
