@@ -88,22 +88,11 @@ def stock_formatter():
             row_counter += 1
     # print(row_counter)
 
-    stock_col = ['PERMNO', 'SICCD', 'DIVAMT', 'BIDLO', 'ASKHI', 'PRC', 'VOL', 'SHROUT', 'ewretd']
     df_stock = ra.delete_rows_by_threshold(df_stock, 3)
-
-    stock_col = ['SICCD', 'DIVAMT', 'BIDLO', 'ASKHI', 'PRC', 'VOL', 'SHROUT', 'ewretd']
-    cols = df_stock.columns.tolist()
-    cols = cols[:3] + cols[5:-2] + cols[-1:] + cols[4:5]  # + cols[-2:-1]
-
-    # CAREFUL PERMNO CODE DELETED FOR TESTING REASONS!!!!!!!!!!!!!!
-
 
     # print(df_stock.head())
 
-    # CAREFUL PERMNO CODE DELETED FOR TESTING REASONS!!!!!!!!!!!!!!!
-
     df_stock = df_stock.drop('date', axis=1)
-
 
     le = pp.LabelEncoder()
     data_le = le.fit_transform(df_stock['PERMNO'])
