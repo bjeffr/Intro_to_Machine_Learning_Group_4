@@ -141,4 +141,3 @@ def clean_data():
 
 d1 = clean_data()
 
-print(d1.isnull().sum())
