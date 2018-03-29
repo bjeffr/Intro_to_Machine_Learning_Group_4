@@ -21,7 +21,7 @@ def grid_search(df):
 
     df['delta'] = df['delta'].fillna(0)
 
-    # distignuish between columns that have to be scaled and the dummy columns
+    # all columns of df
     cols = df.columns.values
 
     #****************-------------------*********************----------------------*******************--------------------
@@ -34,21 +34,17 @@ def grid_search(df):
     X_train, X_test, y_train, y_test = train_test_split(df, y, test_size=0.3, random_state=0, stratify=y)
 
     #X_train, X_test, y_train, y_test = train_test_split(df[cols], y, test_size=0.3, random_state=0, stratify=y)
-    # print(X_train.head())
-    stdsc = StandardScaler()
-    X_train_std = stdsc.fit_transform(X_train)
-
-    # transform test set
-    X_test_std = stdsc.transform(X_test)
+    # # print(X_train.head())
+    # stdsc = StandardScaler()
+    # X_train_std = stdsc.fit_transform(X_train)
+    #
+    # # transform test set
+    # X_test_std = stdsc.transform(X_test)
 
 
 # ------------------------------------------------------------------------------------------------
     scatter_matrix(df[cols[:3]], alpha=0.2, figsize=(6, 6), diagonal='kde')
-
-
 # ------------------------------------------------------------------------------------------------
-
-
 
     #****************-------------------*********************----------------------*******************--------------------
                          #Grid Search
@@ -58,8 +54,8 @@ def grid_search(df):
 
 
     maxDepth = np.array([1,4,5,6])
-    minSamplesNode = np.array([2,5])
-    minSamplesLeaf = np.array([2,5])
+    minSamplesNode = np.array([2,5,6,8,10])
+    minSamplesLeaf = np.array([2,5,6,8,10])
 
     kFold = StratifiedKFold(n_splits=10, random_state=5)
 
@@ -68,29 +64,25 @@ def grid_search(df):
                   'min_samples_split': minSamplesNode,
                   'min_samples_leaf': minSamplesLeaf}
 
-
-
     gs = GridSearchCV(estimator=DecisionTreeClassifier(random_state=0),
                       param_grid=param_grid,
                       scoring='accuracy',
                       cv=kFold, n_jobs=-1)
-    gs = gs.fit(X_train_std, y_train)
+    gs = gs.fit(X_train, y_train)
 
     print(gs.best_score_)
     print(gs.best_params_)
 
     clf = gs.best_estimator_
-    print(clf)
-    print(clf.fit(X_train_std, y_train))
+    clf.fit(X_train, y_train)
 
     # Print out score on Test dataset
-    # print('Test accuracy : {0: .4 f}'.format(clf.score(X_test_std, y_test)))
+    # print('Test accuracy: {0: .4f}'.format(clf.score(X_test, y_test)))
+    return clf
+
 
 if __name__ == "__main__":
 
     df = clean_data()
     df = df.drop(columns='Date')
-
     grid_search(df)
-
-
