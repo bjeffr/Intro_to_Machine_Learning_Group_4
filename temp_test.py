@@ -3,8 +3,9 @@ import numpy as np
 from sklearn.model_selection import train_test_split, GridSearchCV, StratifiedKFold
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
 
-
+from pandas.plotting import scatter_matrix
 
 
 def grid_search(df):
@@ -40,6 +41,15 @@ def grid_search(df):
     # transform test set
     X_test_std = stdsc.transform(X_test)
 
+
+# ------------------------------------------------------------------------------------------------
+    scatter_matrix(df[cols[:3]], alpha=0.2, figsize=(6, 6), diagonal='kde')
+
+
+# ------------------------------------------------------------------------------------------------
+
+
+
     #****************-------------------*********************----------------------*******************--------------------
                          #Grid Search
     #****************-------------------*********************----------------------*******************--------------------
@@ -51,7 +61,7 @@ def grid_search(df):
     minSamplesNode = np.array([2,5,10,20])
     minSamplesLeaf = np.array([2,5,10,20])
 
-    kFold = StratifiedKFold(n_splits=10, random_state=10)
+    kFold = StratifiedKFold(n_splits=10, random_state=5)
 
     param_grid = {'criterion': ['gini', 'entropy'],
                   'max_depth': maxDepth,
@@ -68,11 +78,13 @@ def grid_search(df):
 
     print(gs.best_score_)
     print(gs.best_params_)
+
     clf = gs.best_estimator_
-    clf.fit(X_train_std, y_train)
+    print(clf)
+    print(clf.fit(X_train_std, y_train))
 
     # Print out score on Test dataset
-    print('Test accuracy : {0: .4 f}'.format(clf.score(X_test_std, y_test)))
+    # print('Test accuracy : {0: .4 f}'.format(clf.score(X_test_std, y_test)))
 
 if __name__ == "__main__":
 

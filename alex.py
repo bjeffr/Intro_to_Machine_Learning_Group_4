@@ -51,7 +51,8 @@ def test_function():
     # X_train_std = stdsc.fit_transform(X_train[['SICCD', 'DIVAMT', 'BIDLO', 'ASKHI', 'PRC', 'VOL', 'SHROUT', 'RETX', 'ewretd']])
 
     #****************-------------------*********************----------------------*******************--------------------
-                         #Feature Engineering, Scaling, and Cross Validation
+                         #Feature Engineering, Scaling, and Cros
+    # s Validation
     #****************-------------------*********************----------------------*******************--------------------
     tree = DecisionTreeClassifier(max_depth=5, min_samples_leaf=10)
     tree.fit(X_train, y_train)
@@ -77,6 +78,7 @@ def test_function():
 
     dot_data = export_graphviz(tree, filled=True, rounded=True,\
                class_names=['Down', 'Up'], feature_names=df[cols].columns.values,
+
                 out_file='tree.dot')
 
     graph = graphviz.Source(dot_data)
@@ -192,4 +194,3 @@ if __name__ == "__main__":
     test_function()
 
 
-test_function()
