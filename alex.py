@@ -14,9 +14,10 @@ def set_style():
 
 
 def test_function():
+
     df = clean_data()
     df = df.drop(columns='Date')
-
+    print(df.head())
     # create the response vector (up or down movement)
     today = np.log(df['PRC'] / df['PRC'].shift(-1))
     direction = np.where(today >= 0, 1, 0)
@@ -92,30 +93,30 @@ def test_function():
 
     # define the hyperparameter values to be tested
 
-
-    maxDepth = np.array([1,4,5,6,9])
-    minSamplesNode = np.array([2,5,10,20])
-    minSamplesLeaf = np.array([2,5,10,20])
-
-    kFold = StratifiedKFold(n_splits=10, random_state=10)
-
-    param_grid = {'criterion': ['gini', 'entropy'],
-                  'max_depth': maxDepth,
-                  'min_samples_split': minSamplesNode,
-                  'min_samples_leaf': minSamplesLeaf}
-
-
-
-    gs = GridSearchCV(estimator=DecisionTreeClassifier(random_state=0),
-                      param_grid=param_grid,
-                      scoring='accuracy',
-                      cv=kFold, n_jobs=3)
-    gs = gs.fit(X_train, y_train)
-
-    print(gs.best_score_)
-    print(gs.best_params_)
-    clf = gs.best_estimator_
-    clf.fit(X_train, y_train)
+    #
+    # maxDepth = np.array([1,4,5,6,9])
+    # minSamplesNode = np.array([2,5,10,20])
+    # minSamplesLeaf = np.array([2,5,10,20])
+    #
+    # kFold = StratifiedKFold(n_splits=10, random_state=10)
+    #
+    # param_grid = {'criterion': ['gini', 'entropy'],
+    #               'max_depth': maxDepth,
+    #               'min_samples_split': minSamplesNode,
+    #               'min_samples_leaf': minSamplesLeaf}
+    #
+    #
+    #
+    # gs = GridSearchCV(estimator=DecisionTreeClassifier(random_state=0),
+    #                   param_grid=param_grid,
+    #                   scoring='accuracy',
+    #                   cv=kFold, n_jobs=3)
+    # gs = gs.fit(X_train, y_train)
+    #
+    # print(gs.best_score_)
+    # print(gs.best_params_)
+    # clf = gs.best_estimator_
+    # clf.fit(X_train, y_train)
 
     #****************-------------------*********************----------------------*******************--------------------
                           #Support Vector Machines

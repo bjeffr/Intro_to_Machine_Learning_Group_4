@@ -33,7 +33,7 @@ def grid_search(df):
 
     X_train, X_test, y_train, y_test = train_test_split(df, y, test_size=0.3, random_state=0, stratify=y)
 
-    X_train, X_test, y_train, y_test = train_test_split(df[cols], y, test_size=0.3, random_state=0, stratify=y)
+    #X_train, X_test, y_train, y_test = train_test_split(df[cols], y, test_size=0.3, random_state=0, stratify=y)
     # print(X_train.head())
     stdsc = StandardScaler()
     X_train_std = stdsc.fit_transform(X_train)
@@ -57,9 +57,9 @@ def grid_search(df):
     # define the hyperparameter values to be tested
 
 
-    maxDepth = np.array([1,4,5,6,9])
-    minSamplesNode = np.array([2,5,10,20])
-    minSamplesLeaf = np.array([2,5,10,20])
+    maxDepth = np.array([1,4,5,6])
+    minSamplesNode = np.array([2,5])
+    minSamplesLeaf = np.array([2,5])
 
     kFold = StratifiedKFold(n_splits=10, random_state=5)
 
