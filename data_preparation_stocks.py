@@ -1,10 +1,13 @@
 import pandas as pd
+from sklearn import preprocessing as pp
+from Intro_to_Machine_Learning_Group_4 import data_preparation_ratios as ra
 
 
 def stock_formatter():
-    # Organize the df structure with multi indexies, whereas 'PERMNO' is the first index and 'date' the second
+    # Load the csv file for the stocks data and store it as a dataframe
     df_stock = pd.read_csv('stock_version_one.csv')
 
+    # For use with multi index:
     # example to Print all Stock data from Microsoft, indexing is a bit special in panda...here the example to print
     # out all the stock data for MSFT and the second one single dates for MSFT and KO.
     # print(df_stock.loc[10107])  #all microsoft Stock data
@@ -33,37 +36,61 @@ def stock_formatter():
     df_stock['DIVAMT'] = df_stock['DIVAMT'].ffill()
     df_stock['DIVAMT'] = df_stock['DIVAMT'].bfill()
 
+    # One datapoint was type string, short fix:
+    s = df_stock['RETX']
+    s = pd.to_numeric(s, errors='coerce')
+    df_stock['RETX'] = s
+    df_stock['RETX'] = df_stock['RETX'].bfill()
+
+
     # Drop a column if too many NaN or just considered unimportant
     df_stock = df_stock.drop('HSICMG', axis=1)  # has only values for JPM, NKE and CSCO makes no sense to include
     df_stock = df_stock.drop('SPREAD', axis=1)
     df_stock = df_stock.drop('TICKER', axis=1)  # drop the Tickers and created a dictionary with the PERMNO codes
-    stock_dict = {10107:'Microsoft Corporation', 11308:'The Coca-Cola Co', 11850:'Exxon Mobil Corporation', \
-                  12060:'General Electric Company', 12490:'IBM Common Stock', 14541:'Chevron Corporation', \
-                  14593:'Apple Inc.', 17830:'United Technologies Corporation', 18163:'Procter & Gamble Co', \
-                  18542:'Caterpillar Inc.', 19561:'Boeing Co', 20626:'DOW Chemical Co', 21936:'Pfizer Inc.', \
-                  22111:'Johnson & Johnson', 22592:'3M Co', 22752:'Merck & Co., Inc.', 26403: 'Disney Walt Co',\
-                  43449:'MC Donalds Corp', 47896:'JPMorgan Chase & Co', 55976:'Wal Mart Stores Inc', 57665:'Nike',\
-                  59176:'American Express Co', 59328:'Intel Corp', 59459:'Travelers Companies Inc', 65875:\
-                  'Verizon Communications Inc', 66181:'Home Depot Inc', 76076:'Cisco Systems Inc',\
-                  86868:'Goldman Sachs Group Inc', 92611:'Visa Inc', 92655:'Unitedhealth Group Inc'}
-    # print(df_stock.isnull().sum())
+    stock_dict = {10107: 'Microsoft Corporation',
+                  11308: 'The Coca-Cola Co',
+                  11850: 'Exxon Mobil Corporation',
+                  12060: 'General Electric Company',
+                  12490: 'IBM Common Stock',
+                  14541: 'Chevron Corporation',
+                  14593: 'Apple Inc.',
+                  17830: 'United Technologies Corporation',
+                  18163: 'Procter & Gamble Co',
+                  18542: 'Caterpillar Inc.',
+                  19561: 'Boeing Co',
+                  20626: 'DOW Chemical Co',
+                  21936: 'Pfizer Inc.',
+                  22111: 'Johnson & Johnson',
+                  22592: '3M Co',
+                  22752: 'Merck & Co., Inc.',
+                  26403: 'Disney Walt Co',
+                  43449: 'MC Donalds Corp',
+                  47896: 'JPMorgan Chase & Co',
+                  55976: 'Wal Mart Stores Inc',
+                  57665: 'Nike',
+                  59176: 'American Express Co',
+                  59328: 'Intel Corp',
+                  59459: 'Travelers Companies Inc',
+                  65875: 'Verizon Communications Inc',
+                  66181: 'Home Depot Inc',
+                  76076: 'Cisco Systems Inc',
+                  86868: 'Goldman Sachs Group Inc',
+                  92611: 'Visa Inc',
+                  92655: 'UnitedHealth Group Inc'}
 
     # delete all rows that contain more than the specified number of NaN values,
-    # please only use this as the last step and check the variable row_counter to see how many rows have been deleted
-    thresh = 3
-    row_counter = 0
-    for row in df_stock.iterrows():
-        if row[1].isnull().sum()>thresh:
-            df_stock.drop(df_stock.index[int(row[0])], inplace=True)
-            row_counter += 1
+    # please only use this as the last step
+    # delete rows with 'tresh' NaN's
+    df_stock = ra.delete_rows_by_threshold(df_stock, 3)
 
-    stock_col = ['SICCD', 'DIVAMT', 'BIDLO', 'ASKHI', 'PRC', 'VOL', 'SHROUT', 'ewretd']
-    cols = df_stock.columns.tolist()
-    cols = cols[:3] + cols[5:-2] + cols[-1:] + cols[4:5] #+ cols[-2:-1]
+    p = df_stock['PERMNO']
+    d = df_stock['date']
+    df_stock = df_stock.drop('date', axis=1)
 
-    # CAREFUL PERMNO CODE DELETED FOR TESTING REASONS!!!!!!!!!!!!!!!
 
-    df_stock = df_stock[cols[2:]]
-
+    df_stock['PERMNO'] = df_stock['PERMNO'].astype(str)
+    df_stock = pd.get_dummies(df_stock)
+    df_stock['date'] = d
+    df_stock['permno'] = p
 
     return df_stock

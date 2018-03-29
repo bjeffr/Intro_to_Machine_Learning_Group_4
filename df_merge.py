@@ -1,5 +1,4 @@
 import pandas as pd
-from Intro_to_Machine_Learning_Group_4 import data_preparation_ratios as ra
 
 
 def delete_rows_by_threshold(df, thresh):
@@ -12,7 +11,8 @@ def delete_rows_by_threshold(df, thresh):
 
 def ratio_formatter():
     # load the csv file for the ratios data and store it as a dataframe
-    df = pd.read_csv('ratio_version_one.csv')
+    df = pd.read_csv('df.csv', delimiter=';')
+    print(df.shape)
 
     # ****************---------------***************-----------------*************-----------------
     #                       reformatting the dataframe ratios
@@ -21,10 +21,10 @@ def ratio_formatter():
     # adate and qdate are redundant for our uses after closer inspection therefore we drop those columns
     # curr_ratio and inv_turn simply have to many missing values with whole companies not having any data,
     # that keeping the features can't be justified.
-    df = df.drop(columns=['adate', 'qdate', 'curr_ratio', 'inv_turn'])
+    # HSICMG has only values for JPM, NKE and CSCO makes no sense to include
+    df = df.drop(columns=['adate', 'qdate', 'curr_ratio', 'inv_turn', 'HSICMG', 'SPREAD', 'TICKER'])
 
-    # there are a few rows with lots of values missing, so we delete all rows more than 3 values missing
-    df = delete_rows_by_threshold(df, 4)
+
 
     # dpr is missing for a small number of the first Visa values, we think a backwards fill is therefore adequate
     df['dpr'] = df['dpr'].bfill()
@@ -86,9 +86,7 @@ def ratio_formatter():
     df['RETX'] = df['RETX'].bfill()
 
     # Drop a column if too many NaN or just considered unimportant
-    df_stock = df.drop('HSICMG', axis=1)  # has only values for JPM, NKE and CSCO makes no sense to include
-    df_stock = df.drop('SPREAD', axis=1)
-    df_stock = df.drop('TICKER', axis=1)  # drop the Tickers and created a dictionary with the PERMNO codes
+
     stock_dict = {10107: 'Microsoft Corporation',
                   11308: 'The Coca-Cola Co',
                   11850: 'Exxon Mobil Corporation',
@@ -120,18 +118,18 @@ def ratio_formatter():
                   92611: 'Visa Inc',
                   92655: 'UnitedHealth Group Inc'}
 
-    # delete all rows that contain more than the specified number of NaN values,
-    # please only use this as the last step
-    # delete rows with 'tresh' NaN's
-    df = ra.delete_rows_by_threshold(df_stock, 3)
 
     p = df['PERMNO']
-    d = df['date']
-    df_stock = df_stock.drop('date', axis=1)
+    d = df['public_date']
+    df = df.drop('date', axis=1)
+    df = df.drop('public_date', axis=1)
 
-    df_stock['PERMNO'] = df_stock['PERMNO'].astype(str)
-    df_stock = pd.get_dummies(df_stock)
-    df_stock['date'] = d
-    df_stock['permno'] = p
+    df['PERMNO'] = df['PERMNO'].astype(str)
+    df = pd.get_dummies(df)
+    df['public_date'] = d
+    df['permno'] = p
+
+    # there are a few rows with lots of values missing, so we delete all rows more than 3 values missing
+    df = delete_rows_by_threshold(df, 4)
 
     return df
