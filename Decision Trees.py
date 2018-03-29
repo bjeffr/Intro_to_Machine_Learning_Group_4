@@ -61,4 +61,3 @@ y_pred = tree.predict(X_test)
 confm = pd.DataFrame({'Predicted movement >=4k': y_pred, 'True movement >=4k': y_test})
 confm.replace(to_replace={0:'No', 1:'Yes'}, inplace=True)
 print(confm.groupby(['True movement >=4k', 'Predicted movement >=4k']).size().unstack('Predicted movement >=4k'))
-
